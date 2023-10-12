@@ -40,7 +40,25 @@ export const Td = styled.td`
     }
 `;
 
-const Grid = ({tasks}) => {
+
+const Grid = ({tasks, setTask,  setOnEdit}) => {
+    
+    const handleDelete = async (id) =>{
+        await axios.delete("http://localhost:8800/" + id ).then(({ data }) => {
+                const newArray = tasks.filter((task) => task.id !== id);
+
+                setTask(newArray);
+                toast.success(data);
+            })
+            .catch(({data}) => toast.error(data));
+
+        setOnEdit(null);
+
+    }
+    const handleEdit = (item) => {
+        setOnEdit(item);
+    };
+
     return(
         <Table>
             <Thead>
@@ -56,8 +74,8 @@ const Grid = ({tasks}) => {
                     <Tr key={i}>
                         <Td width="30%">{item.Task}</Td>
                         <Td width="30%">{item.Description}</Td>
-                        <Td alignCenter width="5%"><FaEdit/></Td>
-                        <Td alignCenter width="5%"><FaTrash/></Td>
+                        <Td alignCenter width="5%"><FaEdit onClick={() => handleEdit(item)}/></Td>
+                        <Td alignCenter width="5%"><FaTrash onClick={()=> handleDelete(item.id)}/></Td>
                     </Tr>
                 ))}
             </Tbody>

@@ -1,5 +1,7 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef} from "react";
 import styled from "styled-components";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const FormsContainer = styled.form`
     display: flex;
@@ -33,11 +35,63 @@ const Button = styled.button`
     color: white;
     height: 42px;
 `;
-const Forms = ({ onEdit }) => {
+const Forms = ({ getTask, onEdit, setOnEdit }) => {
     const ref = useRef();
 
+    useEffect(() => {
+        if (onEdit) {
+            const task = ref.current;
+
+            task.Task.value = onEdit.Task;
+            task.Description.value = onEdit.Description;
+            task.data_incial.value = onEdit.data_incial;
+            task.date_final.value = onEdit.date_final;
+        }
+    }, [onEdit]);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const task = ref.current;
+        if (!task.Task.value ||
+            !task.Description.value ||
+            !task.data_incial.value ||
+            !task.date_final.value) {
+
+            return toast.warn("Preencha todos os campos!")
+        }
+
+        if (onEdit) {
+            await axios.put("http://localhost:8800/" + onEdit.id, {
+                    Task: task.Task.value,
+                    Description: task.Description.value,
+                    data_incial: task.data_incial.value,
+                    date_final: task.date_final.value,
+                })
+                .then(({ data }) => toast.success(data))
+                .catch(({ data }) => toast.error(data));
+        } else {
+            await axios
+                .post("http://localhost:8800", {
+                    Task: task.Task.value,
+                    Description: task.Description.value,
+                    data_incial: task.data_incial.value,
+                    date_final: task.date_final.value,
+                })
+                .then(({ data }) => toast.success(data))
+                .catch(({ data }) => toast.error(data));
+        }
+        task.Task.value = ""
+        task.Description.value = ""
+        task.data_incial.value = ""
+        task.date_final.value = ""
+
+        setOnEdit(null);
+        getTask();
+    };
+
     return (
-        <FormsContainer ref={ref}>
+        <FormsContainer ref={ref} onSubmit={handleSubmit}>
             <InputArea>
                 <Label>Task</Label>
                 <Input name="Task" />
@@ -48,11 +102,11 @@ const Forms = ({ onEdit }) => {
             </InputArea>
             <InputArea>
                 <Label>Data de inicio</Label>
-                <Input name="data_inicial" type="date" />
+                <Input name="data_incial" type="date" />
             </InputArea>
             <InputArea>
                 <Label>Data de final</Label>
-                <Input name="data_final" type="date" />
+                <Input name="date_final" type="date" />
             </InputArea>
 
             <Button type="submit">Salvar</Button>

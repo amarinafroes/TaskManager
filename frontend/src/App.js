@@ -25,24 +25,24 @@ function App() {
   const [tasks, setTask] = useState([]);
   const [onEdit, setOnEdit] = useState(null);
 
-  const getTasks = async() => {
+  const getTask = async() => {
     try{
       const res = await axios.get("http://localhost:8800");
-      setTask(res.data.sort((a, b) => (a.task > b.task ? 1: -1)));
+      setTask(res.data.sort((a, b) => (a.task > b.task ? 1 : -1)));
     }catch(error){
       toast.error(error);
     }
   };
   useEffect(() => {
-    getTasks();
+    getTask();
   },[setTask]);
 
   return (
     <>
       <Container>
         <Title>Tarefas</Title>
-        <Form/>
-        <Grid tasks = {tasks} />
+        <Form onEdit={onEdit} setOnEdit={setOnEdit} getTask={getTask}/>
+        <Grid tasks = {tasks} setTask={setTask} setOnEdit={setOnEdit}  />
       </Container>
       <ToastContainer autoClose={3000} position={toast.POSITION.BOTTOM_LEFT} />
       <GlobalStyle />
