@@ -43,18 +43,24 @@ export const Td = styled.td`
 
 const Grid = ({tasks, setTask,  setOnEdit}) => {
     
-    const handleDelete = async (id) =>{
-        await axios.delete("http://localhost:8800/" + id ).then(({ data }) => {
-                const newArray = tasks.filter((task) => task.id !== id);
-
-                setTask(newArray);
-                toast.success(data);
-            })
-            .catch(({data}) => toast.error(data));
-
+    const handleDelete = async (Id) => {
+        try {
+            const response = await axios.delete("http://localhost:8800/" + Id);
+            if (response.status === 200) {
+                const updatedTasks = tasks.filter(task => task.Id !== Id);
+                setTask(updatedTasks);
+                console.log(tasks)
+                toast.success("Tarefa excluída com sucesso Marina!");
+            } else {
+                toast.error("Erro ao excluir tarefa.");
+            }
+        } catch (error) {
+            toast.error("Erro ao excluir tarefa.");
+        }
         setOnEdit(null);
-
-    }
+    };
+    
+    
     const handleEdit = (item) => {
         setOnEdit(item);
     };
@@ -75,7 +81,7 @@ const Grid = ({tasks, setTask,  setOnEdit}) => {
                         <Td width="30%">{item.Task}</Td>
                         <Td width="30%">{item.Description}</Td>
                         <Td alignCenter width="5%"><FaEdit onClick={() => handleEdit(item)}/></Td>
-                        <Td alignCenter width="5%"><FaTrash onClick={()=> handleDelete(item.id)}/></Td>
+                        <Td alignCenter width="5%"><FaTrash onClick={()=> handleDelete(item.Id)}/></Td>
                     </Tr>
                 ))}
             </Tbody>

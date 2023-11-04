@@ -28,7 +28,7 @@ function App() {
   const getTask = async() => {
     try{
       const res = await axios.get("http://localhost:8800");
-      setTask(res.data.sort((a, b) => (a.task > b.task ? 1 : -1)));
+      setTask(res.data.sort((a, b) => (a.Task > b.Task ? 1 : -1)));
     }catch(error){
       toast.error(error);
     }

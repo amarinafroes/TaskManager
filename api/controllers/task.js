@@ -44,13 +44,15 @@ export const updateTask = (req, res) => {
     });
 };
 export const deleteTask = (req, res) => {
-    const q =
-    "DELETE FROM tasks  WHERE `id` = ?";
+    console.log("Endpoint deleteTask acionado");
+    console.log("ID a ser deletado:", req.params.id);
 
-   
-    db.query(q, [req.params.id], (err)=>{
+    const q = "DELETE FROM tasks WHERE `id` = ?";
+
+    db.query(q, [req.params.id], (err) => {
         if(err) return res.json(err);
 
         return res.status(200).json("Tarefa deletada com sucesso.");
     });
 };
+

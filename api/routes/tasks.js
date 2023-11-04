@@ -7,8 +7,8 @@ router.get("/", getTask);
 
 router.post("/", addTask);
 
-router.put("/: id", updateTask);
+router.put("/:id", updateTask);
 
-router.delete("/: id", deleteTask);
+router.delete("/:id", deleteTask);
 
 export default router;

@@ -62,7 +62,7 @@ const Forms = ({ getTask, onEdit, setOnEdit }) => {
         }
 
         if (onEdit) {
-            await axios.put("http://localhost:8800/" + onEdit.id, {
+            await axios.put("http://localhost:8800/" + onEdit.Id, {
                     Task: task.Task.value,
                     Description: task.Description.value,
                     data_incial: task.data_incial.value,
