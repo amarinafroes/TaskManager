@@ -1,8 +1,8 @@
 import React from "react";
 import axios from "axios";
 import styled from "styled-components";
-import {FaTrash, FaEdit} from "react-icons/fa";
-import{toast} from "react-toastify";
+import { FaTrash, FaEdit } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 const Table = styled.table`
     width:100%;
@@ -32,8 +32,8 @@ export const Th = styled.th`
 `;
 export const Td = styled.td`
     padding-top: 15px;
-    text-align: ${(props) => (props.alignCenter ? "center": "start")};
-    width: ${(props) => (props.width ? props.width:"auto")};
+    text-align: ${(props) => (props.alignCenter ? "center" : "start")};
+    width: ${(props) => (props.width ? props.width : "auto")};
 
     @media(max-width: 500px){
         ${(props) => props.onlyWeb && "display: none"}
@@ -41,8 +41,8 @@ export const Td = styled.td`
 `;
 
 
-const Grid = ({tasks, setTask,  setOnEdit}) => {
-    
+const Grid = ({ tasks, setTask, setOnEdit }) => {
+
     const handleDelete = async (Id) => {
         try {
             const response = await axios.delete("http://localhost:8800/" + Id);
@@ -59,13 +59,13 @@ const Grid = ({tasks, setTask,  setOnEdit}) => {
         }
         setOnEdit(null);
     };
-    
-    
+
+
     const handleEdit = (item) => {
         setOnEdit(item);
     };
 
-    return(
+    return (
         <Table>
             <Thead>
                 <Tr>
@@ -80,8 +80,10 @@ const Grid = ({tasks, setTask,  setOnEdit}) => {
                     <Tr key={i}>
                         <Td width="30%">{item.Task}</Td>
                         <Td width="30%">{item.Description}</Td>
-                        <Td alignCenter width="5%"><FaEdit onClick={() => handleEdit(item)}/></Td>
-                        <Td alignCenter width="5%"><FaTrash onClick={()=> handleDelete(item.Id)}/></Td>
+                        <Td alignCenter width="5%">
+                            <FaEdit onClick={() => handleEdit(item)} />
+                        </Td>
+                        <Td alignCenter width="5%"><FaTrash onClick={() => handleDelete(item.Id)} /></Td>
                     </Tr>
                 ))}
             </Tbody>
