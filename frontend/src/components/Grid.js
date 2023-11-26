@@ -50,7 +50,7 @@ const Grid = ({ tasks, setTask, setOnEdit }) => {
                 const updatedTasks = tasks.filter(task => task.Id !== Id);
                 setTask(updatedTasks);
                 console.log(tasks)
-                toast.success("Tarefa excluída com sucesso Marina!");
+                toast.success("Tarefa excluída com sucesso!");
             } else {
                 toast.error("Erro ao excluir tarefa.");
             }
